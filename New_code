@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENDGAME FISHING — Naples, Florida</title>
+  <meta name="description" content="Endgame Fishing — Premier sport fishing charters in Naples, Florida. Book your trip today.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="img6.png" fetchpriority="high">
+  <link rel="preload" as="image" href="img2.jpg" fetchpriority="high">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Jost:wght@300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow:hidden; background:#000; }
+
+    .stage { position:fixed; inset:0; overflow:hidden; }
+    .slides { position:absolute; inset:0; }
+    .slide {
+      position:absolute; inset:0;
+      background-size:cover; background-position:center; background-repeat:no-repeat;
+      opacity:0; transition:opacity 2s ease-in-out;
+    }
+    .slide.active { opacity:1; }
+
+    .overlay {
+      position:absolute; inset:0; pointer-events:none;
+      background: linear-gradient(to bottom,
+        rgba(0,0,0,.18) 0%,
+        rgba(0,0,0,.28) 40%,
+        rgba(0,0,0,.52) 80%,
+        rgba(0,0,0,.72) 100%);
+    }
+
+    .logo-wrap {
+      position:fixed; top:0; left:0; right:0;
+      display:flex; justify-content:center;
+      padding-top:0; margin-top:-4px;
+      z-index:100; pointer-events:none;
+    }
+    .logo-wrap img {
+      display:block;
+      width: clamp(220px, 28vw, 420px);
+      height:auto;
+    }
+
+    .bottom-info {
+      position:absolute; bottom:9vh; left:0; right:0;
+      z-index:3;
+      display:flex; flex-direction:column; align-items:center; gap:9px;
+      text-align:center;
+    }
+    .location {
+      font-family:'Montserrat',sans-serif; font-weight:300;
+      font-size:clamp(.55rem,1.3vw,.78rem);
+      letter-spacing:.38em; text-transform:uppercase;
+      color:rgba(255,255,255,.8);
+    }
+    .clock {
+      font-family:'Montserrat',sans-serif; font-weight:300;
+      font-size:clamp(.55rem,1.3vw,.78rem);
+      letter-spacing:.38em; text-transform:uppercase;
+      color:rgba(255,255,255,.8);
+    }
+    .location-row {
+      display:flex; align-items:center; gap:18px;
+    }
+    .divider {
+      width:1px; height:10px; background:rgba(255,255,255,.35);
+    }
+    .book-btn {
+      margin-top:14px;
+      font-family:'Montserrat',sans-serif; font-weight:300;
+      font-size:clamp(.5rem,1.1vw,.7rem);
+      letter-spacing:.42em; text-transform:uppercase;
+      color:rgba(255,255,255,.88); text-decoration:none;
+      border:1px solid rgba(255,255,255,.35);
+      padding:12px 18px;
+      background:rgba(0,0,0,.15);
+      transition:all .4s ease;
+      display:inline-block;
+    }
+    .book-btn:hover { background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.75); color:#fff; letter-spacing:.52em; }
+
+    .dots {
+      position:absolute; bottom:3.5vh; left:50%; transform:translateX(-50%);
+      z-index:4; display:flex; gap:9px;
+    }
+    .dot { width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,.28); transition:background .3s; }
+    .dot.active { background:rgba(255,255,255,.8); }
+
+    .top-nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:flex-start; justify-content:space-between;
+      padding:28px 36px; pointer-events:none;
+    }
+
+    .hbg {
+      pointer-events:auto; background:none; border:none; cursor:pointer;
+      display:flex; flex-direction:column; gap:4px; padding:4px;
+      opacity:.82; transition:opacity .3s;
+    }
+    .hbg:hover { opacity:1; }
+    .hbg span { display:block; width:18px; height:1px; background:#fff; transition:all .4s ease; }
+    .hbg.open span:nth-child(1) { transform:rotate(45deg) translate(3.5px,3.5px); }
+    .hbg.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+    .hbg.open span:nth-child(3) { transform:rotate(-45deg) translate(3.5px,-3.5px); }
+
+    .socials { pointer-events:auto; display:flex; gap:20px; align-items:center; }
+    .socials a { color:rgba(255,255,255,.75); text-decoration:none; transition:color .3s; display:flex; align-items:center; }
+    .socials a:hover { color:#fff; }
+    .socials svg { width:19px; height:19px; fill:currentColor; }
+
+    .menu-overlay {
+      position:fixed; inset:0; z-index:90;
+      background:rgba(0,0,0,0); pointer-events:none;
+      transition:background .45s ease;
+    }
+    .menu-overlay.open { background:rgba(0,0,0,.45); pointer-events:auto; }
+    .menu-panel {
+      position:absolute; top:0; left:0;
+      width:min(340px,85vw); height:100%;
+      background:#04090f;
+      border-right:1px solid rgba(255,255,255,.06);
+      transform:translateX(-100%);
+      transition:transform .5s cubic-bezier(.16,1,.3,1);
+      display:flex; flex-direction:column;
+      padding:110px 50px 60px;
+    }
+    .menu-overlay.open .menu-panel { transform:translateX(0); }
+    .menu-nav { display:flex; flex-direction:column; gap:2px; }
+    .menu-nav a {
+      font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:400;
+      font-size:clamp(1.1rem,2.5vw,1.5rem);
+      color:rgba(255,255,255,.55); text-decoration:none;
+      letter-spacing:.02em; line-height:1.35;
+      transition:color .3s, letter-spacing .3s, padding-left .3s;
+    }
+    .menu-nav a:hover { color:#fff; letter-spacing:.06em; padding-left:4px; }
+    .menu-divider { width:36px; height:1px; background:rgba(255,255,255,.15); margin:34px 0; }
+    .menu-tag {
+      font-family:'Montserrat',sans-serif; font-weight:200;
+      font-size:.58rem; letter-spacing:.3em; text-transform:uppercase;
+      color:rgba(255,255,255,.28); margin-top:auto;
+    }
+
+    .manifesto-page {
+      position:fixed; inset:0; z-index:80;
+      background:#04080f;
+      background-image: url('img1.jpg');
+      background-size:cover; background-position:center top;
+      display:flex; align-items:flex-start; justify-content:center;
+      opacity:0; pointer-events:none;
+      transition:opacity .6s ease;
+      overflow-y:auto;
+    }
+    .manifesto-page::before {
+      content:''; position:fixed; inset:0;
+      background: linear-gradient(to bottom,
+        rgba(0,0,0,.72) 0%,
+        rgba(0,0,0,.78) 50%,
+        rgba(0,0,0,.85) 100%);
+      z-index:0; pointer-events:none;
+    }
+    .manifesto-inner { position:relative; z-index:1; }
+    .manifesto-page.visible { opacity:1; pointer-events:auto; }
+    .manifesto-inner {
+      max-width:620px; width:90%;
+      padding:28px 0 90px;
+      text-align:center;
+    }
+    .m-head {
+      font-family:'Jost',sans-serif; font-style:normal; font-weight:300;
+      font-size:clamp(1rem,2.2vw,1.3rem);
+      letter-spacing:.45em; color:#fff;
+      text-transform:uppercase;
+      margin-bottom:44px; line-height:1.4;
+    }
+    .m-body {
+      font-family:'Cormorant Garamond',serif; font-weight:300;
+      font-size:clamp(.95rem,1.9vw,1.12rem);
+      line-height:2.05; color:rgba(255,255,255,.72);
+      letter-spacing:.02em;
+    }
+    .m-body p { margin-bottom:1.5em; }
+    .m-body .em { font-style:italic; font-weight:400; color:rgba(255,255,255,.9); }
+    .m-close {
+      position:fixed; top:56px; left:36px;
+      background:none; border:none; cursor:pointer;
+      font-family:'Montserrat',sans-serif; font-weight:200;
+      font-size:.42rem; letter-spacing:.18em; text-transform:uppercase;
+      color:rgba(255,255,255,.55);
+      display:flex; align-items:center; justify-content:center;
+      transition:color .3s;
+      z-index:90;
+      width:26px;
+      padding:4px 0;
+    }
+    .m-close:hover { color:#fff; }
+
+
+    .manifesto-closing {
+      font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:400;
+      font-size:clamp(.95rem,1.9vw,1.12rem);
+      letter-spacing:.02em; color:rgba(255,255,255,.9);
+      margin-top:56px; line-height:2.05;
+      text-align:center;
+    }
+    ::-webkit-scrollbar { width:3px; }
+    ::-webkit-scrollbar-track { background:#04080f; }
+    ::-webkit-scrollbar-thumb { background:rgba(255,255,255,.18); }
+
+    /* ── MOBILE RESPONSIVE ── */
+    @media (max-width: 768px) {
+
+      /* Photos — ensure full cover on portrait mobile */
+      .slide {
+        background-position: center center;
+        background-size: cover;
+      }
+
+      /* Logo */
+      .logo-wrap img {
+        width: clamp(120px, 38vw, 200px);
+      }
+
+      /* Bottom info — tighten spacing */
+      .bottom-info {
+        bottom: 11vh;
+        gap: 5px;
+        width: 100%;
+        left: 0;
+        right: 0;
+        transform: none;
+        align-items: center;
+        text-align: center;
+      }
+      .location {
+        font-size: clamp(.5rem, 3.2vw, .7rem);
+        letter-spacing: .28em;
+      }
+      .clock {
+        font-size: clamp(.5rem, 3vw, .68rem);
+        letter-spacing: .22em;
+      }
+      .book-btn {
+        font-size: clamp(.42rem, 2.5vw, .58rem);
+        letter-spacing: .28em;
+        padding: 10px 16px;
+        margin-top: 10px;
+      }
+
+      /* Nav padding */
+      .top-nav {
+        padding: 20px 22px;
+      }
+
+      /* Hamburger panel — full width on small screens */
+      .menu-panel {
+        width: 100vw;
+        padding: 90px 36px 50px;
+        border-right: none;
+      }
+      .menu-nav a {
+        font-size: clamp(1rem, 5vw, 1.3rem);
+      }
+
+      /* Back button on mobile */
+      .m-close {
+        top: 52px;
+        left: 22px;
+      }
+
+      /* Dots */
+      .dots {
+        bottom: 5vh;
+      }
+
+      /* Manifesto */
+      .manifesto-inner {
+        padding: 80px 0 70px;
+      }
+      .m-head {
+        font-size: clamp(.75rem, 3.5vw, 1rem);
+        letter-spacing: .3em;
+        margin-bottom: 30px;
+      }
+      .m-body {
+        font-size: clamp(.85rem, 3.8vw, 1rem);
+        line-height: 1.85;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo-wrap img {
+        width: clamp(100px, 34vw, 160px);
+      }
+      .menu-panel {
+        padding: 80px 28px 40px;
+      }
+      .socials svg {
+        width: 16px;
+        height: 16px;
+      }
+      .socials {
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="slides" id="slides">
+    <div class="slide active" style="background-image:url('img2.jpg')"></div>
+    <div class="slide" data-bg="img3.jpg"></div>
+    <div class="slide" data-bg="img4.jpg"></div>
+    <div class="slide" data-bg="img5.jpg"></div>
+  </div>
+
+  <div class="overlay"></div>
+
+  <div class="logo-wrap">
+    <img id="logoImg" src="img6.png" alt="Endgame Fishing" />
+  </div>
+
+  <div class="bottom-info">
+    <div class="location">Naples, Florida</div>
+    <div class="clock" id="naplesClock">&mdash;</div>
+    <a href="https://www.mycaptain.com/booking/endgamefishing" target="_blank" rel="noopener" class="book-btn">Book Now</a>
+  </div>
+
+  <div class="dots" id="dots"></div>
+</div>
+
+<nav class="top-nav">
+  <button class="hbg" id="hbg" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="socials">
+    <a href="https://www.instagram.com/endgamesportfishing/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.youtube.com/@Capt.Jasondiver" target="_blank" rel="noopener" aria-label="YouTube">
+      <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </a>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-panel">
+    <nav class="menu-nav">
+      <a href="https://www.mycaptain.com/booking/endgamefishing" target="_blank" rel="noopener">Book Now</a>
+      <a href="#" id="manifestoLink">Manifesto</a>
+    </nav>
+    <div class="menu-divider"></div>
+    <div class="menu-tag">Naples, Florida &mdash; Endgame Fishing</div>
+  </div>
+</div>
+
+<div class="manifesto-page" id="manifestoPage">
+  <button class="m-close" id="mClose">Back</button>
+  <div class="manifesto-inner">
+    <div class="m-head">Our Water. Our Code.</div>
+    <div class="m-body">
+      <p class="em">We are not tourists.<br>We are not weekend warriors.<br>We are not here to drift.</p>
+      <p>We are captains.<br>A small circle. Handpicked. Earned &mdash; not claimed.</p>
+      <p>We read tides like scripture.<br>We track wind like blood pressure.<br>We move with precision.</p>
+      <p>We do not guess. We know.</p>
+      <p>Out here, excuses sink.<br>The ocean does not care about ego.<br>Mother Nature does not negotiate.</p>
+      <p>She rewards discipline.<br>She punishes arrogance.<br>And we respect her.</p>
+      <p>We do not overharvest.<br>We do not waste.<br>We do not leave scars on the water.</p>
+      <p>If we take, we give back.<br>If we fish, we steward.<br>If we lead, we protect.</p>
+      <p>Conservation is not a marketing word to us.<br>It is law.<br>It is lineage.<br>It is legacy.</p>
+      <p>We release with intention.<br>We handle with care.<br>We fight hard &mdash; and we respect harder.</p>
+      <p>We don&rsquo;t play around on the water.<br>Not with safety.<br>Not with the fish.<br>Not with each other.</p>
+      <p>Gear is dialed.<br>Knots are clean.<br>Engines are ready.<br>Minds are sharp.</p>
+      <p>Every cast has purpose.<br>Every decision has weight.<br>Every trip leaves the water better than we found it.</p>
+      <p>This is not a hobby.<br>This is not a vibe.<br>This is a code.</p>
+      <p>Elite doesn&rsquo;t mean loud.<br>It means disciplined.<br>It means prepared.<br>It means accountable when no one is watching.</p>
+      <p>We are here for the long game.<br>For the next generation.<br>For the waters that raised us.<br>For the fish that feed us.</p>
+      <p class="em">We answer to tide and time.<br>And we leave nothing behind but wake.</p>
+      <p class="manifesto-closing">What's your endgame?</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function tick() {
+    const t = new Date().toLocaleTimeString('en-US', {
+      timeZone: 'America/New_York',
+      hour: 'numeric', minute: '2-digit', hour12: true
+    });
+    document.getElementById('naplesClock').textContent = t;
+  }
+  tick(); setInterval(tick, 1000);
+
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  let cur = 0, timer;
+
+  slides.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = n;
+    const s = slides[cur];
+    if (s.dataset.bg) { s.style.backgroundImage = "url('" + s.dataset.bg + "')"; delete s.dataset.bg; }
+    s.classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+  }
+
+  timer = setInterval(() => goTo((cur+1) % slides.length), 5500);
+
+  const hbg = document.getElementById('hbg');
+  const menuOverlay = document.getElementById('menuOverlay');
+  hbg.addEventListener('click', () => {
+    hbg.classList.toggle('open');
+    menuOverlay.classList.toggle('open');
+  });
+  menuOverlay.addEventListener('click', e => {
+    if (e.target === menuOverlay) {
+      hbg.classList.remove('open');
+      menuOverlay.classList.remove('open');
+    }
+  });
+
+  const manifestoPage = document.getElementById('manifestoPage');
+  document.getElementById('manifestoLink').addEventListener('click', e => {
+    e.preventDefault();
+    hbg.classList.remove('open');
+    menuOverlay.classList.remove('open');
+    manifestoPage.classList.add('visible');
+    clearInterval(timer);
+  });
+  document.getElementById('mClose').addEventListener('click', () => {
+    manifestoPage.classList.remove('visible');
+    manifestoPage.scrollTop = 0;
+    timer = setInterval(() => goTo((cur+1) % slides.length), 5500);
+  });
+</script>
+</body>
+</html>
